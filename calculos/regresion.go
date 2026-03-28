@@ -8,7 +8,7 @@ import (
 func RegresionLineal(datos, pesos []float64, sesgo float64) float64 {
 	var prediccion float64
 	for i := 0; i < len(datos); i++ {
-		prediccion = pesos[i] * datos[i]
+		prediccion += pesos[i] * datos[i]
 	}
 	return prediccion + sesgo
 }
@@ -68,11 +68,9 @@ func PredecirTemperatura(relative_humidity, precipitation, pressure float64,
 	normalizarHumedad := MinMaxScaler(relative_humidity, x_min_max["relative_humidity"]["x_min"], x_min_max["relative_humidity"]["x_max"])
 	normalizarPrecipitacion := MinMaxScaler(precipitation, x_min_max["precipitation"]["x_min"], x_min_max["precipitation"]["x_max"])
 	normalizarPresion := MinMaxScaler(pressure, x_min_max["pressure"]["x_min"], x_min_max["pressure"]["x_max"])
+	datos := []float64{normalizarHumedad, normalizarPrecipitacion, normalizarPresion}
 	//Prediccion y = w1*x1+w2*x2+w3*x3+b
-	temperatura := (aprendizaje.Pesos[0]*normalizarHumedad)+
-					(aprendizaje.Pesos[1]*normalizarPrecipitacion)+
-					(aprendizaje.Pesos[2]*normalizarPresion)+
-					aprendizaje.Sesgo
+	temperatura := RegresionLineal(datos, aprendizaje.Pesos, aprendizaje.Sesgo)
 	temperaturaCelsius := Desnormalizar(temperatura, x_min_max["temperature"]["x_min"], x_min_max["temperature"]["x_max"])
 	return temperaturaCelsius
 }
