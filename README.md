@@ -42,4 +42,4 @@ Desnormalización: Para retornar el valor a la escala Celsius
 $y_{celsius} = (\hat{y}_{norm} \cdot (max - min)) + min$
 
 ## 4. temperature_data.csv
-Dataset con 1384 registros del clima
+Dataset con 1386 registros del clima
